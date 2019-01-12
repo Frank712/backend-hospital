@@ -22,7 +22,13 @@ const Hospital = require('../models/hospital');
     /*|             Get all HOSPITALS      |*/
     /*======================================*/
 app.get( '/', (req, res) =>{
-   Hospital.find({}, 'name img, user')
+    let _from = req.query._from || 0;
+    _from = Number(_from);
+
+   Hospital.find({}, 'name img user')
+       .skip(_from)
+       .limit(5)
+       .populate('user', 'name email')
        .exec( (err, hospitals) =>{
            if ( err ) {
                return res.status(500).json({
@@ -31,9 +37,20 @@ app.get( '/', (req, res) =>{
                    error: err
                });
            }
-           res.json({
-               ok: true,
-               hospitals
+           Hospital.count({}, (err, count) => {
+               if ( err ) {
+                   return res.status(500).json({
+                       ok: false,
+                       message: 'Error on counter DB',
+                       error: err
+                   });
+               }
+               res.json({
+                   ok: true,
+                   message: "Hospital found successfully",
+                   hospitals,
+                   counter: count
+               });
            });
        });
 });
@@ -45,8 +62,7 @@ app.post( '/', middlewareAuth.verifyToken, (req, res) =>{
    let body = req.body;
    let hospital = new Hospital({
        name: body.name,
-       img: body.img,
-       user: body.user
+       user: req.user_consult._id
    });
    hospital.save( (err, hospitalDB) => {
        if ( err ){
@@ -65,7 +81,7 @@ app.post( '/', middlewareAuth.verifyToken, (req, res) =>{
    });
 });
     /*======================================*/
-    /*|     Update a USER (by ID)          |*/
+    /*|    Update a HOSPITAL (by ID)       |*/
     /*======================================*/
 app.put( '/:id', middlewareAuth.verifyToken, (req, res) =>{
    let body = req.body;
@@ -86,8 +102,7 @@ app.put( '/:id', middlewareAuth.verifyToken, (req, res) =>{
            });
        }
        hospitalDB.name = body.name;
-       hospitalDB.img = body.img;
-       hospitalDB.user = body.user;
+       hospitalDB.user = req.user_consult._id;
 
        hospitalDB.save( (err, hospitalSaved ) => {
            if( err  ){

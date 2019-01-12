@@ -23,7 +23,12 @@ const User = require('../models/user');
     /*|             Get all USERS          |*/
     /*======================================*/
 app.get('/', (req, res, next) => {
+    let _from = req.query._from || 0;
+    _from = Number(_from);
+
     User.find({}, 'name lastname email img role')
+        .skip(_from)
+        .limit(5)
         .exec( (err, users) => {
                 if ( err ) {
                     return res.status(500).json({
@@ -32,10 +37,21 @@ app.get('/', (req, res, next) => {
                         error: err
                     });
                 }
+            User.count({}, (err, count) => {
+                if ( err ) {
+                    return res.status(500).json({
+                        ok: false,
+                        message: 'Error on counter DB',
+                        error: err
+                    });
+                }
                 res.json({
                     ok: true,
-                    users
+                    users,
+                    counter: count
                 });
+            });
+
             }
         )
     });
