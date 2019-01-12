@@ -23,7 +23,9 @@ app.use(bodyParser.json());
 let appRoutes = require('./routes/app');
 let userRoutes = require('./routes/user');
 let hospitalRoutes = require('./routes/hospital');
+let doctorRoutes = require('./routes/doctor');
 let loginRoutes = require('./routes/login');
+let searchRoutes = require('./routes/search');
     /*======================================*/
     /*|       Connection to DataBase       |*/
     /*======================================*/
@@ -46,4 +48,6 @@ app.listen(port, () =>{
 app.use('/login', loginRoutes);
 app.use('/users', userRoutes);
 app.use('/hospital', hospitalRoutes);
+app.use('/doctor', doctorRoutes);
+app.use('/search', searchRoutes);
 app.use('/', appRoutes);
