@@ -1,13 +1,23 @@
+/*=//////////////////////////////////////////////////////////*/
+/*                         SEARCH on DB                     |*/
+/*  Description: Services to search in database for         |*/
+/*  collections (Doctor, User, Hospital) and general        |*/
+/*=//////////////////////////////////////////////////////////*/
+    /*======================================*/
+    /*|            Requires                |*/
+    /*======================================*/
 let express = require('express');
 let app = express();
-
     /*======================================*/
-    /*|         Models             |*/
+    /*|            Models:                 |*/
+    /*|  User, Doctor, Hospital            |*/
     /*======================================*/
 let Hospital = require('../models/hospital');
 let Doctor = require('../models/doctor');
 let User = require('../models/user');
-//   Routes
+    /*======================================*/
+    /*|     Search in all collections       |*/
+    /*======================================*/
 app.get('/all/:search', (req, res, next) => {
     let search = req.params.search;
     let regex = new RegExp(search, 'i');
@@ -40,6 +50,60 @@ app.get('/all/:search', (req, res, next) => {
             });
         });
 });
+    /*======================================*/
+    /*|   Search in specific collection    |*/
+    /*| Valid collections:                 |*/
+    /*| 'users', 'doctors' and 'hospitals  |*/
+    /*======================================*/
+
+app.get( '/collection/:table/:search', (req, res) => {
+    let promise;
+    let search = req.params.search;
+    let table = req.params.table;
+    let regex = new RegExp(search, 'i');
+
+    switch (table) {
+        case 'users':
+            promise = searchUsers(search, regex);
+            break;
+        case 'doctors':
+            promise = searchDoctors(search, regex);
+            break;
+        case 'hospitals':
+            promise = searchHospitals(search, regex);
+            break;
+        default:
+            return res.status(400).json({
+                ok: false,
+                message: `Table ${table} is not valid. Only accept: users, doctors and hospitals`
+            });
+    }
+
+    promise.then( data =>{
+        if( data.length === 0 ){
+            return res.status(400).json({
+                ok: true,
+                message: `Results not found with param '${search}'`
+            })
+        }
+        res.status(200).json({
+            ok: true,
+            [table]: data
+        });
+    })
+        .catch(err =>{
+            return res.status(500).json({
+                ok: false,
+                message: 'An error has been occurred while searching on database',
+                error: err
+            });
+        });
+});
+/*=//////////////////////////////////////////////////////////*/
+/*              Promises to execute searching               |*/
+/*  Description: aux functions to do the searching          |*/
+/*  Search in hospital, doctor and user Collections         |*/
+/*=//////////////////////////////////////////////////////////*/
 
 function searchHospitals( search, regex ) {
     return new Promise( ( resolve, reject ) =>{
