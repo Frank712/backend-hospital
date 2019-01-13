@@ -26,6 +26,8 @@ let hospitalRoutes = require('./routes/hospital');
 let doctorRoutes = require('./routes/doctor');
 let loginRoutes = require('./routes/login');
 let searchRoutes = require('./routes/search');
+let uploadRoutes = require('./routes/upload');
+let imagesRoutes = require('./routes/images');
     /*======================================*/
     /*|       Connection to DataBase       |*/
     /*======================================*/
@@ -42,6 +44,13 @@ const port = 3000;
 app.listen(port, () =>{
     console.log(`Server ONLINE, listen in port ${port}`);
 });
+
+    /*======================================*/
+    /*|         Serve-index config         |*/
+    /*======================================*/
+/*let serveIndex = require('serve-index');
+app.use(express.static(__dirname + '/'));
+app.use('/uploads', serveIndex(__dirname + '/uploads'));*/
     /*======================================*/
     /*|         Apply routes               |*/
     /*======================================*/
@@ -50,4 +59,7 @@ app.use('/users', userRoutes);
 app.use('/hospital', hospitalRoutes);
 app.use('/doctor', doctorRoutes);
 app.use('/search', searchRoutes);
+app.use('/upload', uploadRoutes);
+app.use('/images', imagesRoutes);
 app.use('/', appRoutes);
+
