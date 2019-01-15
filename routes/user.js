@@ -60,7 +60,7 @@ app.get('/', (req, res, next) => {
     /*======================================*/
     /*|         Create a new User           |*/
     /*======================================*/
-app.post('/', middlewareAuth.verifyToken, (req, res) => {
+app.post('/', (req, res) => {
     let body = req.body;
     let user = new User({
         name: body.name,

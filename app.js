@@ -13,6 +13,15 @@ let bodyParser = require( 'body-parser' );
     /*| [app, body-parser and mongoose]    |*/
     /*======================================*/
 let app = express();
+    /*======================================*/
+    /*|         Enabling CROS-Origin       |*/
+    /*======================================*/
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+    next();
+});
 //  Creating middleware
 //  for x-www-form-encoded
 app.use(bodyParser.urlencoded({ extend: true} ));
