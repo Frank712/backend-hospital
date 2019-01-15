@@ -74,8 +74,9 @@ app.post( '/google', async(req, res) =>{
                 res.json({
                     ok: true,
                     message: 'User login!',
-                    userDB,
-                    token
+                    user: userDB,
+                    token,
+                    id: userDB._id
                 });
             }
         } else {
@@ -104,8 +105,9 @@ app.post( '/google', async(req, res) =>{
                 res.json({
                     ok: true,
                     message: 'User saved successfully!',
-                    userSaved,
-                    token
+                    user: userSaved,
+                    token,
+                    id: userSaved._id
                 });
             });
         }
@@ -147,8 +149,9 @@ app.post( '/', (req, res) =>{
         res.json({
             ok: true,
             message: 'User login!',
-            userDB,
-            token
+            user: userDB,
+            token,
+            id: userDB._id
         });
     });
 });
