@@ -135,7 +135,7 @@ function searchDoctors( search, regex ) {
 
 function searchUsers( search, regex ) {
     return new Promise( ( resolve, reject ) =>{
-        User.find({}, 'name email role')
+        User.find({}, 'img lastname name email role')
             .or([ {'name': regex}, {'email': regex}])
             .exec( (err, users) =>{
                 if( err ){
