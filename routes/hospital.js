@@ -56,6 +56,41 @@ app.get( '/', (req, res) =>{
 });
 
     /*======================================*/
+    /*|         Get Hospital by ID         |*/
+    /*======================================*/
+app.get( '/:id', (req, res) =>{
+    let _from = req.query._from || 0;
+    _from = Number(_from);
+    let id = req.params.id;
+    console.log(id);
+
+    Hospital.findById(id)
+        .skip(_from)
+        .limit(5)
+        .populate('user', 'name email img')
+        .exec( (err, hospital) =>{
+            if ( err ) {
+                return res.status(500).json({
+                    ok: false,
+                    message: 'Error on DB',
+                    error: err
+                });
+            }
+            if ( !hospital ) {
+                return res.status(400).json({
+                    ok: false,
+                    message: 'Hospital not found :('
+                });
+            }
+            res.json({
+                ok: true,
+                message: "Hospital found successfully",
+                hospital
+            });
+        });
+});
+
+    /*======================================*/
     /*|       Create a new HOSPITAL        |*/
     /*======================================*/
 app.post( '/', middlewareAuth.verifyToken, (req, res) =>{

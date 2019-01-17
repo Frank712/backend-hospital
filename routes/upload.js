@@ -198,7 +198,7 @@ function uploadByType( typeUser, id, fileName, response ){
                     }
                 });
             }
-            let oldPath = './uploads/hospitals/' + userDB.img;
+            let oldPath = './uploads/hospitals/' + hospitalDB.img;
             console.log(oldPath);
             if( fs.existsSync( oldPath ) ){
                 console.log("The image exists!");
