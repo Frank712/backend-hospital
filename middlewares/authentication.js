@@ -21,11 +21,22 @@ module.exports.verifyToken = function(req, res, next) {
         req.user_consult = decoded.user;
         //  Go to the next Services...
         next();
-        /*res.status(200).json({
-            ok: false,
-            message: 'All right!',
-            decoded
-        });*/
-
     });
+};
+
+/*======================================*/
+/*|   Create a middleware to JWT       |*/
+/*======================================*/
+module.exports.verifyRoleOrSelf = function(req, res, next) {
+
+    let user = req.user_consult;
+    let id = req.params.id;
+    if ( user.role === 'ADMIN_ROLE' || user._id === id) {
+        next();
+    } else {
+        return res.status(401).json({
+            ok: false,
+            message: 'The user is not ADMIN or Self'
+        });
+    }
 };

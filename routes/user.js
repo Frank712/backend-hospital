@@ -90,7 +90,7 @@ app.post('/', (req, res) => {
     /*======================================*/
     /*|     Update a USER (by ID)          |*/
     /*======================================*/
-app.put( '/:id', middlewareAuth.verifyToken, (req, res) =>{
+app.put( '/:id', [middlewareAuth.verifyToken, middlewareAuth.verifyRoleOrSelf], (req, res) =>{
     let id = req.params.id;
     let body = req.body;
     User.findById(id, (err, userDB) => {
@@ -137,7 +137,7 @@ app.put( '/:id', middlewareAuth.verifyToken, (req, res) =>{
     /*======================================*/
     /*|         Delete a user (by ID)      |*/
     /*======================================*/
-app.delete( '/:id', middlewareAuth.verifyToken, (req, res) =>{
+app.delete( '/:id', [middlewareAuth.verifyToken, middlewareAuth.verifyRoleOrSelf], (req, res) =>{
     let id = req.params.id;
     User.findByIdAndRemove(id, (err, userDel) =>{
         if ( err  ){
