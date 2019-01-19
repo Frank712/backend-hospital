@@ -6,6 +6,7 @@ let SEED = require('../config/config').SEED;
 let app = express();
 let bcrypt = require( 'bcryptjs');
 let jwt = require('jsonwebtoken');
+let middAuth = require('../middlewares/authentication');
     /*======================================*/
     /*|         Google Requires            |*/
     /*======================================*/
@@ -16,6 +17,22 @@ const client = new OAuth2Client(CLIENT_ID);
     /*|            Models                  |*/
     /*======================================*/
 const User = require('../models/user');
+
+    /*======================================*/
+    /*|         Renew token                |*/
+    /*======================================*/
+app.get('/renew_token', middAuth.verifyToken, (req, res) =>{
+    let user = req.user_consult;
+    //  Generate the JSON Web Token
+    let token = jwt.sign({
+        user
+    }, SEED, {expiresIn: 14400}); // 4 hours for expiration
+    res.json({
+        ok: true,
+        token
+    });
+});
+
     /*======================================*/
     /*|         Login Google               |*/
     /*======================================*/
@@ -130,14 +147,14 @@ app.post( '/', (req, res) =>{
         if( !userDB ){
             return res.status(400).json({
                 ok: false,
-                message: '(User) or password incorrect!',
+                message: 'User or password incorrect!',
                 error: err
             });
         }
         if( !bcrypt.compareSync( body.password, userDB.password )  ){
             return res.status(400).json({
                 ok: false,
-                message: 'User or (password) incorrect!',
+                message: 'User or password incorrect!',
                 error: err
             });
         }
