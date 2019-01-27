@@ -40,7 +40,7 @@ let imagesRoutes = require('./routes/images');
     /*======================================*/
     /*|       Connection to DataBase       |*/
     /*======================================*/
-mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB', (err, resp) => {
+mongoose.connection.openUri(process.env.URL_DB, (err, resp) => {
     if( err ){
         throw err;
     }
@@ -49,7 +49,7 @@ mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB', (err, resp) 
     /*======================================*/
     /*|        Listen connections          |*/
     /*======================================*/
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () =>{
     console.log(`Server ONLINE, listen in port ${port}`);
 });
