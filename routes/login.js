@@ -26,7 +26,7 @@ app.get('/renew_token', middAuth.verifyToken, (req, res) =>{
     //  Generate the JSON Web Token
     let token = jwt.sign({
         user
-    }, SEED, {expiresIn: 14400}); // 4 hours for expiration
+    }, SEED, {expiresIn: 43200}); // 12 hours for expiration
     res.json({
         ok: true,
         token
@@ -86,7 +86,7 @@ app.post( '/google', async(req, res) =>{
                 //  Generating a owner token
                 let token = jwt.sign({
                     user: userDB
-                }, SEED, {expiresIn: 14400}); // 4 hours for expiration
+                }, SEED, {expiresIn: 43200}); // 12 hours for expiration
                 //  Send a response ok
                 res.json({
                     ok: true,
