@@ -185,8 +185,7 @@ function getMenu( ROLE ) {
                 { title: 'Dashboard', url: '/dashboard' },
                 { title: 'Progress', url: '/progress' },
                 { title: 'Graphics', url: '/graphics1' },
-                { title: 'Promises', url: '/promises' },
-                { title: 'RXJS', url: '/rxjs' }
+                { title: 'Promises', url: '/promises' }
             ]
         },
         {
