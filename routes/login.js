@@ -180,7 +180,7 @@ function getMenu( ROLE ) {
     var menu = [
         {
             title: 'Main',
-            icon: 'fa fa-elementor',
+            icon: 'fab fa-elementor',
             submenu: [
                 { title: 'Dashboard', url: '/dashboard' },
                 { title: 'Progress', url: '/progress' },
