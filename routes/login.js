@@ -180,7 +180,7 @@ function getMenu( ROLE ) {
     var menu = [
         {
             title: 'Main',
-            icon: 'mdi mdi-gauge',
+            icon: 'fa fa-elementor',
             submenu: [
                 { title: 'Dashboard', url: '/dashboard' },
                 { title: 'Progress', url: '/progress' },
@@ -190,7 +190,7 @@ function getMenu( ROLE ) {
         },
         {
             title: 'Maintenance',
-            icon: 'mdi mdi-folder-lock-open',
+            icon: 'fa fa-tasks',
             submenu : [
                 /*{ title: 'Users', url: '/users' },*/
                 { title: 'Doctors', url: '/doctors' },
